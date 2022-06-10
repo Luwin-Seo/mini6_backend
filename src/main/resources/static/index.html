@@ -45,6 +45,29 @@
           });
       }
 
+      function logout() {
+          $.ajax({
+              type: "POST",
+              url: "/logout",
+              headers:{'Authorization': $.cookie('token')},
+              success: function (response, textStatus, request) {
+                  const jwtToken = request.getResponseHeader("Authorization");
+
+                  if (jwtToken) {
+                      $.cookie("token", jwtToken);
+                      $.ajaxSetup({
+                          headers:{
+                              'Authorization': $.cookie('token', jwtToken, { path: '/' })
+                          }
+                      });
+                      window.location.href = '/';
+                  } else {
+                      window.location.href = '/';
+                  }
+              }
+          })
+      }
+
   </script>
 </head>
 <body>
@@ -54,7 +77,9 @@
 <button onclick="hello()">
     안녕?
 </button>
-
+<button onclick="logout()">
+    로그아웃
+</button>
 
 </body>
 </html>

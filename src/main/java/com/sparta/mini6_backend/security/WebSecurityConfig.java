@@ -85,6 +85,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // 로그아웃 요청 처리 URL
                 .logoutUrl("/logout")
                 .permitAll()
+                .logoutSuccessHandler(jwtLogoutSuccessfulHandler())
                 .and()
                 .exceptionHandling()
                 // "접근 불가" 페이지 URL 설정
@@ -104,6 +105,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public FormLoginSuccessHandler formLoginSuccessHandler() {
         return new FormLoginSuccessHandler();
     }
+
+    @Bean
+    public JWTLogoutSuccessfulHandler jwtLogoutSuccessfulHandler() {return new JWTLogoutSuccessfulHandler();}
 
     @Bean
     public FormLoginAuthProvider formLoginAuthProvider() {

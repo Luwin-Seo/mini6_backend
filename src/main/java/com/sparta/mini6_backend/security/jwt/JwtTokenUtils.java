@@ -38,12 +38,12 @@ public final class JwtTokenUtils {
         return token;
     }
 
-    public static String generateLogoutToken(UserDetailsImpl userDetails) {
+    public static String generateLogoutToken() {
         String token = null;
         try {
             token = JWT.create()
                     .withIssuer("Luwin")
-                    .withClaim(CLAIM_USER_NAME, userDetails.getUsername())
+                    .withClaim(CLAIM_USER_NAME, "dummyName")
                     // 토큰 만료 일시 = 현재 시간 + 토큰 유효기간)
                     .withClaim(CLAIM_EXPIRED_DATE, new Date(System.currentTimeMillis() + 100))
                     .sign(generateAlgorithm());
