@@ -17,4 +17,9 @@ public class UserController {
     public String userSignup (@RequestBody SignupRequestDto requestDto) {
      return userService.userSignup(requestDto);
     }
+
+    @PostMapping("/dupcheck")
+    public String dupCheck (String username) {
+        return userService.dupCheck(username);
+    }
 }

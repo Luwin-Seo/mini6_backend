@@ -19,4 +19,10 @@ public class UserService {
         userRepository.save(new User(requestDto));
         return "회원가입이 정상처리 되었습니다";
     }
+
+    public String dupCheck (String username) {
+        return (!userRepository.findByUsername(username).isPresent()) ?
+                "사용 가능한 아이디입니다" :
+                username + "은 이미 존재하는 아이디입니다";
+    }
 }
