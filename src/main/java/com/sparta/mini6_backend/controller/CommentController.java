@@ -34,9 +34,10 @@ public class CommentController {
     public Comment createComment(@PathVariable Long articleId,
                                  @RequestBody CommentRequestDto requestDto,
                                  @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        //로그인된 사용자 확인 - 다시 확인하기
-        if(userDetails.getUsername() == null )
+        //로그인된 사용자 확인
+        if(userDetails == null ) { //userDetails.getName()은 nullExceptionPoint 에러 날 수 있다.!!그래서 userDetails로 하자.
             throw new IllegalArgumentException("로그인 후 사용해주세요");
+        }
 
         //서비스에게 위임
         //받은 값을 반환
@@ -48,6 +49,11 @@ public class CommentController {
     public Comment updateComment(@PathVariable Long commentId,
                                  @RequestBody CommentRequestDto requestDto,
                                  @AuthenticationPrincipal UserDetailsImpl userDetails){
+        //로그인된 사용자 확인 - 다시 확인하기
+        if(userDetails == null ) { //userDetails.getName()은 nullExceptionPoint 에러 날 수 있다.!!그래서 userDetails로 하자.
+            throw new IllegalArgumentException("로그인 후 사용해주세요");
+        }
+
         //서비스에 위임
         return commentService.updateComment(commentId, requestDto, userDetails);
 
@@ -57,6 +63,11 @@ public class CommentController {
     @DeleteMapping("/api/articles/comments/{commentId}")
     public ResponseEntity delete(@PathVariable Long commentId,
                                  @AuthenticationPrincipal UserDetailsImpl userDetails) {
+
+        //로그인된 사용자 확인 - 다시 확인하기
+        if(userDetails == null ) { //userDetails.getName()은 nullExceptionPoint 에러 날 수 있다.!!그래서 userDetails로 하자.
+            throw new IllegalArgumentException("로그인 후 사용해주세요");
+        }
 
         //서비스에 위임
         return commentService.delete(commentId, userDetails);

@@ -25,6 +25,8 @@ public class CommentService {
 
     private final CommentRepository commentRepository;
 
+    private final ArticleRepository articleRepository;
+
     private final UserRepository userRepository;
 
 
@@ -39,18 +41,18 @@ public class CommentService {
                 .orElseThrow(() -> new NullPointerException("해당 게시글이 존재하지 않습니다.")
         );
 
-        //로그인한 회원만 작성 가능 ->controller
+        //comment 엔티티에 같이 넣어주기 위해서 로그인한 회원 찾기
         User joinUser = userRepository.findByUsername(userDetails.getUsername())
-                .orElseThrow(() -> new IllegalArgumentException("로그인 부탁드립니다.")
+                .orElseThrow(() -> new IllegalArgumentException("유효한 회원을 찾을 수 없습니다.")
                 );
 
         //코멘트가 비어있을 때 예외 발생
         String commentStr = requestDto.getComment();
-        if(commentStr == null){
+        if(commentStr.equals("")){
             throw new NullPointerException("댓글 내용을 작성해주세요");
         }
 
-        //requestDto, article 합쳐서 엔티티 만들기
+        //requestDto, article 합쳐서 comment 엔티티 만들기
         Comment comment = new Comment(requestDto, joinUser);
 
         //댓글 DB에 저장
@@ -66,13 +68,18 @@ public class CommentService {
                 .orElseThrow(() -> new IllegalArgumentException("댓글 수정 실패! 대상 댓글이 없습니다.")
         );
 
-        //로그인한 회원에 자신이 작성한 댓글만 수정 가능
-        //로그인한 회원만 작성 가능
+        //작성자 본인이 맞는지 확인하기 위해서
         User joinUser = userRepository.findByUsername(userDetails.getUsername())
-                .orElseThrow(() -> new IllegalArgumentException("로그인 부탁드립니다.")
+                .orElseThrow(() -> new IllegalArgumentException("유효한 회원을 찾을 수 없습니다.")
                 );
         //본인 댓글인지 확인
         validateCheckUser(joinUser, comment);
+
+        //코멘트가 비어있을 때 예외 발생
+        String commentStr = requestDto.getComment();
+        if(commentStr.equals("")){
+            throw new NullPointerException("댓글 내용을 작성해주세요");
+        }
 
         //댓글 DB에 수정 반영
         comment.update(requestDto);
@@ -88,10 +95,9 @@ public class CommentService {
                 .orElseThrow(() -> new IllegalArgumentException("댓글 삭제 실패! 대상이 없습니다.")
         );
 
-        //로그인한 회원에 자신이 작성한 댓글만 수정 가능
-        //로그인한 회원만 작성 가능
+        //작성자 본인이 맞는지 확인하기 위해서
         User joinUser = userRepository.findByUsername(userDetails.getUsername())
-                .orElseThrow(() -> new IllegalArgumentException("로그인 부탁드립니다.")
+                .orElseThrow(() -> new IllegalArgumentException("유효한 회원을 찾을 수 없습니다.")
                 );
         //본인 댓글인지 확인
         validateCheckUser(joinUser, comment);
