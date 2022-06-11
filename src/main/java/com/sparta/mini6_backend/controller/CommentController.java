@@ -23,7 +23,8 @@ public class CommentController {
     @GetMapping("/api/comment/{articleId}")
     public List<Comment> getComments(@PathVariable Long articleId) {
 
-        return commentRepository.findByArticleId(articleId);
+        //댓글 ArticleId로 조회하고 내림차순으로 정렬
+        return commentRepository.findByArticleIdByOrderByCreatedAtDesc(articleId);
     }
 
     //댓글 생성
@@ -40,11 +41,11 @@ public class CommentController {
     public Comment updateComment(@PathVariable Long commentId,
                                  @RequestBody CommentRequestDto requestDto){
         //서비스에 위임
-        commentService.updateComment(commentId, requestDto);
+        return commentService.updateComment(commentId, requestDto);
 
-        return null;
     }
 
+    //댓글 삭제
     @DeleteMapping("/api/comment/{commentId}")
     public ResponseEntity delete(@PathVariable Long commentId) {
 

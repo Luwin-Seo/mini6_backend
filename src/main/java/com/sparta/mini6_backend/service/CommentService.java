@@ -52,7 +52,7 @@ public class CommentService {
         //댓글 DB에 수정 반영
         comment.update(requestDto);
 
-        return null;
+        return comment;
     }
 
     //댓글 삭제
