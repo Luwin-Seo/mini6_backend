@@ -10,8 +10,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequiredArgsConstructor
 public class ArticleController {
@@ -47,6 +45,13 @@ public class ArticleController {
         Page<Article> articles = articleService.readArticles(page);
         return articles;
     }
+
+    // 생으로 전체 조회
+//    @GetMapping("/api/articles")
+//    public List<Article> readArticles() {
+//        List<Article> articles = articleRepository.findAll();
+//        return articles;
+//    }
 
     // 글 상세 조회
     @GetMapping("/api/article/{articleId}")

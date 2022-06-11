@@ -7,12 +7,12 @@ import com.sparta.mini6_backend.repository.ArticleRepository;
 import com.sparta.mini6_backend.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 
-import java.awt.print.Pageable;
 import java.util.List;
 
 @Service
@@ -47,7 +47,7 @@ public class ArticleService {
     // 글 목록 조회
     public Page<Article> readArticles(int page) {
         Sort sort = Sort.by(Sort.Direction.ASC, "createdAt");
-        Pageable pageable = (Pageable) PageRequest.of(page, 5, sort);
-        return articleRepository.findAllPageable(pageable);
+        Pageable pageable = PageRequest.of(page, 5, sort);
+        return articleRepository.findAll(pageable);
     }
 }
