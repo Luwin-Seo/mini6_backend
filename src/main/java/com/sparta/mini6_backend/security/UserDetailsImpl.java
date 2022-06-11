@@ -14,6 +14,8 @@ public class UserDetailsImpl implements UserDetails {
 
     private final User user;
 
+    public User getUser() { return user; }
+
     @Override
     //유저 엔티티에서 가지고 있는 유저 롤은 String 형태이므로 UserDetail에서 요구하는 형식에 부합하지 않으므로 이 형식에 맞게
     //변형이 필요하여 아래의 과정을 진행해야 함함
