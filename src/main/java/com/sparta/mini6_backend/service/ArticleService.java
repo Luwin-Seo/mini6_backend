@@ -38,7 +38,7 @@ public class ArticleService {
     // 게시글 수정
     public Article updateArticle(@AuthenticationPrincipal UserDetailsImpl userDetails, Long articleId, ArticleRequestDto requestDto) {
         Long loginId = userDetails.getUser().getUserId();
-        Article article = (Article) articleRepository.findByArticleId(articleId).orElseThrow(
+        Article article = articleRepository.findByArticleId(articleId).orElseThrow(
                 () -> new NullPointerException("해당 게시글이 존재하지 않습니다.")
         );
 
