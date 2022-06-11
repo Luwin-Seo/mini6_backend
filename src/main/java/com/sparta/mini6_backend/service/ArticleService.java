@@ -44,7 +44,7 @@ public class ArticleService {
         return article;
     }
 
-    // 글 목록 조회
+    // 게시글 목록 조회
     public Page<Article> readArticles(int page) {
         Sort sort = Sort.by(Sort.Direction.ASC, "createdAt");
         Pageable pageable = PageRequest.of(page, 5, sort);

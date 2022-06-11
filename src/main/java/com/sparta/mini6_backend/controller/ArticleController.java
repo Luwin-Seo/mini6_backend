@@ -25,20 +25,20 @@ public class ArticleController {
     }
 
     // 게시글 수정
-    @PutMapping("/api/article/{articleId}")
+    @PutMapping("/api/articles/{articleId}")
     public Article updateArticle(@PathVariable Long articleId, @RequestBody ArticleRequestDto requestDto) {
         Article article = articleService.updateArticle(articleId, requestDto);
         return article;
     }
 
     // 게시글 삭제
-    @DeleteMapping("/api/article/{articleId}")
+    @DeleteMapping("/api/articles/{articleId}")
     public String deleteArticle(@PathVariable Long articleId) {
         articleRepository.deleteById(articleId);
         return "게시글이 삭제되었습니다.";
     }
 
-    // 글 목록 조회
+    // 게시글 목록 조회
     @GetMapping("/api/articles")
     public Page<Article> readArticles(@RequestParam("page") int page) {
         page -= 1;
@@ -46,8 +46,8 @@ public class ArticleController {
         return articles;
     }
 
-    // 글 상세 조회
-    @GetMapping("/api/article/{articleId}")
+    // 게시글 상세 조회
+    @GetMapping("/api/articles/{articleId}")
     public Article readArticle(@PathVariable Long articleId) {
         Article article = articleRepository.findById(articleId).orElseThrow(
                 () -> new NullPointerException("게시글이 존재하지 않습니다.")
