@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface ArticleRepository extends JpaRepository<Article, Long> {
     Page<Article> findAll(Pageable pageable);
 
-    <T> Optional<T> findByArticleId(Long articleId);
+    Optional<Article> findByArticleId(Long articleId);
 
     void deleteByArticleId(Long articleId);
 }

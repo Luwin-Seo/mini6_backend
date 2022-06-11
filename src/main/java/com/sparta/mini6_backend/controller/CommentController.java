@@ -26,7 +26,7 @@ public class CommentController {
     public List<Comment> getComments(@PathVariable Long articleId) {
 
         //댓글 ArticleId로 조회하고 내림차순으로 정렬 //찾을 때 ArticleId가 아닌 Article로 찾아야한다. comment에 ArticleId가 없다...
-        return commentRepository.findByArticleIdByOrderByCreatedAtDesc(articleId);
+        return commentRepository.findByArticleIdOrderByCreatedAtDesc(articleId);
     }
 
     //댓글 생성
