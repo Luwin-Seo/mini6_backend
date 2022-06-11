@@ -58,6 +58,7 @@ public class CommentService {
     }
 
     //댓글 수정
+    @Transactional
     public Comment updateComment(Long commentId,
                                  CommentRequestDto requestDto,
                                  UserDetails userDetails) {
@@ -86,6 +87,7 @@ public class CommentService {
     }
 
     //댓글 삭제
+    @Transactional
     public ResponseEntity<String> delete(Long commentId,
                                          UserDetails userDetails) {
         //댓글 조회 및 예외 발생
