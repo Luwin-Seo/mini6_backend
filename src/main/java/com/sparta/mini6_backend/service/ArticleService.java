@@ -51,7 +51,7 @@ public class ArticleService {
     // 게시글 삭제
     public void deleteArticle(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long articleId) {
         Long loginId = userDetails.getUser().getUserId();
-        Article article = (Article) articleRepository.findByArticleId(articleId).orElseThrow(
+        Article article = articleRepository.findByArticleId(articleId).orElseThrow(
                 () -> new NullPointerException("해당 게시글이 존재하지 않습니다.")
         );
 
