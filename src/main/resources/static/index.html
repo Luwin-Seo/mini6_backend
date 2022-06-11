@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+
+  <script>
+      function onLogin() {
+          $.ajax({
+              type: "POST",
+              url: `/login`,
+              contentType: "application/json",
+              data: JSON.stringify({
+                  username: "",
+                  password: ""
+              }),
+              success: function (response, textStatus, request) {
+                  const jwtToken = request.getResponseHeader("Authorization");
+
+                  if (jwtToken) {
+                      $.cookie("token", jwtToken);
+                      $.ajaxSetup({
+                          headers:{
+                              'Authorization': $.cookie('token', jwtToken, { path: '/' })
+                          }
+                      });
+                      window.location.href = '/';
+                  } else {
+                      window.location.href = '/';
+                  }
+              }
+          })
+      }
+
+      function hello() {
+          $.ajax({
+              type: "GET",
+              url: "/test",
+              headers:{'Authorization': $.cookie('token')},
+              success: function (response) {
+                  alert(response);
+              }
+          });
+      }
+
+      function logout() {
+          $.ajax({
+              type: "POST",
+              url: "/logout",
+              headers:{'Authorization': $.cookie('token')},
+              success: function (response, textStatus, request) {
+                  const jwtToken = request.getResponseHeader("Authorization");
+
+                  if (jwtToken) {
+                      $.cookie("token", jwtToken);
+                      $.ajaxSetup({
+                          headers:{
+                              'Authorization': $.cookie('token', jwtToken, { path: '/' })
+                          }
+                      });
+                      window.location.href = '/';
+                  } else {
+                      window.location.href = '/';
+                  }
+              }
+          })
+      }
+
+  </script>
+</head>
+<body>
+<button onclick=" onLogin()">
+    로그인하세요
+</button>
+<button onclick="hello()">
+    안녕?
+</button>
+<button onclick="logout()">
+    로그아웃
+</button>
+
+</body>
+</html>
