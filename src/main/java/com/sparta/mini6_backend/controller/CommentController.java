@@ -15,6 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CommentController {
 
+    //깃허브 연습중 깃허브 너무 어렵다 ㅠㅠ
     private final CommentService commentService;
 
     private final CommentRepository commentRepository;
