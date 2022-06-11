@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -35,13 +36,28 @@ public class ArticleService {
     }
 
     // 게시글 수정
-    public Article updateArticle(Long articleId, ArticleRequestDto requestDto) {
-        Article article = articleRepository.findById(articleId).orElseThrow(
+    public Article updateArticle(@AuthenticationPrincipal UserDetailsImpl userDetails, Long articleId, ArticleRequestDto requestDto) {
+        Long loginId = userDetails.getUser().getUserId();
+        Article article = (Article) articleRepository.findByArticleId(articleId).orElseThrow(
                 () -> new NullPointerException("해당 게시글이 존재하지 않습니다.")
         );
 
+        if (loginId != article.getUserId()) throw new IllegalArgumentException("로그인 정보가 일치하지 않습니다.");
+
         article.updateArticle(requestDto);
         return article;
+    }
+
+    // 게시글 삭제
+    public void deleteArticle(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long articleId) {
+        Long loginId = userDetails.getUser().getUserId();
+        Article article = (Article) articleRepository.findByArticleId(articleId).orElseThrow(
+                () -> new NullPointerException("해당 게시글이 존재하지 않습니다.")
+        );
+
+        if (loginId != article.getUserId()) throw new IllegalArgumentException("로그인 정보가 일치하지 않습니다.");
+
+        articleRepository.deleteByArticleId(articleId);
     }
 
     // 게시글 목록 조회

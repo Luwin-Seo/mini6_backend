@@ -20,22 +20,31 @@ public class ArticleController {
     // 게시글 작성
     @PostMapping("/api/article")
     public Article createArticle(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody ArticleRequestDto requestDto) {
-        Article article = articleService.createArticle(userDetails, requestDto);
-        return article;
+        if (userDetails != null) {
+            Article article = articleService.createArticle(userDetails, requestDto);
+            return article;
+        }
+        throw new NullPointerException("로그인이 필요합니다.");
     }
 
     // 게시글 수정
     @PutMapping("/api/articles/{articleId}")
-    public Article updateArticle(@PathVariable Long articleId, @RequestBody ArticleRequestDto requestDto) {
-        Article article = articleService.updateArticle(articleId, requestDto);
-        return article;
+    public Article updateArticle(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long articleId, @RequestBody ArticleRequestDto requestDto) {
+        if (userDetails != null) {
+            Article article = articleService.updateArticle(userDetails, articleId, requestDto);
+            return article;
+        }
+        throw new NullPointerException("로그인이 필요합니다.");
     }
 
     // 게시글 삭제
     @DeleteMapping("/api/articles/{articleId}")
-    public String deleteArticle(@PathVariable Long articleId) {
-        articleRepository.deleteById(articleId);
-        return "게시글이 삭제되었습니다.";
+    public String deleteArticle(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long articleId) {
+        if (userDetails != null) {
+            articleService.deleteArticle(userDetails, articleId);
+            return "게시글이 삭제되었습니다.";
+        }
+        throw new NullPointerException("로그인이 필요합니다.");
     }
 
     // 게시글 목록 조회
