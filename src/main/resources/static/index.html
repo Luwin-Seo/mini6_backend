@@ -13,8 +13,8 @@
               url: `/login`,
               contentType: "application/json",
               data: JSON.stringify({
-                  username: "aksdnjs88",
-                  password: "rldjrgownj1!"
+                  username: "",
+                  password: ""
               }),
               success: function (response, textStatus, request) {
                   const jwtToken = request.getResponseHeader("Authorization");
