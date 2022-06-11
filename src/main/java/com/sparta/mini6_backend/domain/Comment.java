@@ -27,7 +27,7 @@ public class Comment extends Timestamped {
     @JoinColumn(name="userId") //연결된 대상의 정보를 가져와서 userId에 넣겠다. - "userId" / 컬럼에 User의 대표값을 저장!!
     private User user;
 
-    @Column(nullable = false)
+    @Column(nullable = false) //username은 나중에 user 테이블에서 가져올 수 있는지 확인하기
     private String username;
 
     @Column(nullable = false)

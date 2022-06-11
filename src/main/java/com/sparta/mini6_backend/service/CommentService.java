@@ -40,9 +40,7 @@ public class CommentService {
         return commentRepository.save(comment);
     }
 
-    /*
-    수정 보류
-     */
+    //댓글 수정
     public Comment updateComment(Long commentId, CommentRequestDto requestDto) {
         //댓글 조회 및 예외 발생
         Comment comment = commentRepository.findById(commentId)
