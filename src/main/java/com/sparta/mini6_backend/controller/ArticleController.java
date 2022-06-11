@@ -46,13 +46,6 @@ public class ArticleController {
         return articles;
     }
 
-    // 생으로 전체 조회
-//    @GetMapping("/api/articles")
-//    public List<Article> readArticles() {
-//        List<Article> articles = articleRepository.findAll();
-//        return articles;
-//    }
-
     // 글 상세 조회
     @GetMapping("/api/article/{articleId}")
     public Article readArticle(@PathVariable Long articleId) {
