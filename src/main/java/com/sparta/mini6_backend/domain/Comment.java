@@ -17,22 +17,23 @@ public class Comment extends Timestamped {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long commentId;
 
-    //댓글에 부모 게시글 있어야 한다.
-    //여러개의 Comment가 하나의 Article에 달린다.
-    @ManyToOne //@ManyToOne 다대일 관계 설정 - 해당 댓글 엔티티 여러개가, 하나의 Article에 연관된다.
-    @JoinColumn(name="articleId") //연결된 대상의 정보를 가져와서 articleId에 넣겠다. - "article_id" / 컬럼에 Article의 대표값을 저장!!
-    private Article article;
+    @Column(nullable = false)
+    private Long articleId;
 
-    @ManyToOne //@ManyToOne 다대일 관계 설정 - 해당 댓글 엔티티 여러개가, 하나의 User에 연관된다.
-    @JoinColumn(name="userId") //연결된 대상의 정보를 가져와서 userId에 넣겠다. - "userId" / 컬럼에 User의 대표값을 저장!!
-    private User user;
+    @Column(nullable = false)
+    private Long userId;
+
+    @Column(nullable = false)
+    private String username;
 
     @Column(nullable = false)
     private String comment;
 
-    public Comment(CommentRequestDto requestDto, User joinUser) {
+    public Comment(CommentRequestDto requestDto, Article article, User joinUser) {
         this.comment = requestDto.getComment();
-        this.user = joinUser;
+        this.articleId = article.getArticleId();
+        this.userId = joinUser.getUserId();
+        this.username = joinUser.getUsername();
     }
 
     public void update(CommentRequestDto requestDto) {

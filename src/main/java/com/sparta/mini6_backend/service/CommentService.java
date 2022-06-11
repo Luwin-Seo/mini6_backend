@@ -53,7 +53,7 @@ public class CommentService {
         }
 
         //requestDto, article 합쳐서 comment 엔티티 만들기
-        Comment comment = new Comment(requestDto, joinUser);
+        Comment comment = new Comment(requestDto, article, joinUser);
 
         //댓글 DB에 저장
         return commentRepository.save(comment);
@@ -109,7 +109,7 @@ public class CommentService {
     }
 
     private void validateCheckUser(User joinUser, Comment comment) {
-        if (!joinUser.equals(comment.getUser())){
+        if (!joinUser.getUserId().equals(comment.getUserId())){
             throw new IllegalArgumentException("권한이 없는 유저 입니다.");
         }
     }
