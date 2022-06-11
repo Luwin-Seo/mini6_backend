@@ -37,7 +37,7 @@ public class CommentService {
                                  UserDetailsImpl userDetails) {
         //게시글 조회 및 예외 발생
         //게시글을 알아야 코멘트가 어디 달릴지 알 수 있다.
-        Article article = articleRepository.findById(articleId)
+        Article article = articleRepository.findByArticleId(articleId)
                 .orElseThrow(() -> new NullPointerException("해당 게시글이 존재하지 않습니다.")
         );
 
