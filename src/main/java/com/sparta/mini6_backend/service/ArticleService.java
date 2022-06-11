@@ -14,6 +14,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -36,6 +37,7 @@ public class ArticleService {
     }
 
     // 게시글 수정
+    @Transactional
     public Article updateArticle(@AuthenticationPrincipal UserDetailsImpl userDetails, Long articleId, ArticleRequestDto requestDto) {
         Long loginId = userDetails.getUser().getUserId();
         Article article = articleRepository.findByArticleId(articleId).orElseThrow(
@@ -45,6 +47,7 @@ public class ArticleService {
         if (loginId != article.getUserId()) throw new IllegalArgumentException("로그인 정보가 일치하지 않습니다.");
 
         article.updateArticle(requestDto);
+        articleRepository.save(article);
         return article;
     }
 
