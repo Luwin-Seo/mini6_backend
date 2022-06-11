@@ -4,7 +4,6 @@ import com.sparta.mini6_backend.domain.Article;
 import com.sparta.mini6_backend.domain.Comment;
 import com.sparta.mini6_backend.domain.User;
 import com.sparta.mini6_backend.dto.request.CommentRequestDto;
-import com.sparta.mini6_backend.dto.response.CommentResponseDto;
 import com.sparta.mini6_backend.repository.ArticleRepository;
 import com.sparta.mini6_backend.repository.CommentRepository;
 import com.sparta.mini6_backend.repository.UserRepository;
@@ -16,7 +15,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.List;
 
 
 @Service
