@@ -4,8 +4,7 @@ import com.sparta.mini6_backend.domain.Like;
 import com.sparta.mini6_backend.repository.LikeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -13,6 +12,7 @@ public class LikeService {
 
     private final LikeRepository likeRepository;
 
+    @Transactional
     public void updateLike(Long articleId, Long userId) {
         if(likeRepository.findByArticleIdAndUserId(articleId, userId).isPresent()) {
             Like like = likeRepository.findByArticleIdAndUserId(articleId, userId).orElseThrow(
