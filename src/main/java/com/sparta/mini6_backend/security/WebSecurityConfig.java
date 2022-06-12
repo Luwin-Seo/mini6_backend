@@ -17,6 +17,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.filter.CorsFilter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,13 +29,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JWTAuthProvider jwtAuthProvider;
     private final HeaderTokenExtractor headerTokenExtractor;
+    private final CorsFilter corsFilter;
 
     public WebSecurityConfig(
             JWTAuthProvider jwtAuthProvider,
-            HeaderTokenExtractor headerTokenExtractor
-    ) {
+            HeaderTokenExtractor headerTokenExtractor,
+            CorsFilter corsFilter) {
         this.jwtAuthProvider = jwtAuthProvider;
         this.headerTokenExtractor = headerTokenExtractor;
+        this.corsFilter = corsFilter;
     }
 
     @Bean
@@ -73,6 +76,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
          * JwtFilter       : 서버에 접근시 JWT 확인 후 인증을 실시합니다.
          */
         http
+                .addFilter(corsFilter)
                 .addFilterBefore(formLoginFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
 
