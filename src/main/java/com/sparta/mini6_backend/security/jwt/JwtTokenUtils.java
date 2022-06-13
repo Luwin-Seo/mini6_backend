@@ -40,6 +40,7 @@ public final class JwtTokenUtils {
 
     public static String generateLogoutToken() {
         String token = null;
+
         try {
             token = JWT.create()
                     .withIssuer("Luwin")
