@@ -48,7 +48,7 @@ public class ArticleController {
     }
 
     // 게시글 목록 조회
-    @GetMapping("/api/articles/{page}")
+    @GetMapping("/api/articles/page/{page}")
     public Page<Article> readArticles(@PathVariable int page) {
         page -= 1;
         Page<Article> articles = articleService.readArticles(page);

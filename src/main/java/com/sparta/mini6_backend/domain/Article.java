@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Getter
@@ -26,23 +25,22 @@ public class Article extends Timestamped{
     private String title;
 
     @Column(nullable = false)
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<Content> contents;
+    private String content;
 
     @Column(nullable = false)
     private boolean done;
 
-    public Article(Long userId, String username, String title, List<Content> contents, boolean done) {
+    public Article(Long userId, String username, String title, String content, boolean done) {
         this.userId = userId;
         this.username = username;
         this.title = title;
-        this.contents = contents;
+        this.content = content;
         this.done = done;
     }
 
     public void updateArticle(ArticleRequestDto requestDto) {
         this.title = requestDto.getTitle();
-        this.contents = requestDto.getContents();
+        this.content = requestDto.getContent();
         this.done = requestDto.getDone();
     }
 }
