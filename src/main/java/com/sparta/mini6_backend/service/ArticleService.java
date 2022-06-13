@@ -28,8 +28,9 @@ public class ArticleService {
         String title = requestDto.getTitle();
         String content = requestDto.getContent();
         Boolean done = requestDto.getDone();
+        String category = requestDto.getCategory();
 
-        Article article = new Article(userId, username, title, content, done);
+        Article article = new Article(userId, username, title, content, done, category);
         articleRepository.save(article);
         return article;
     }
