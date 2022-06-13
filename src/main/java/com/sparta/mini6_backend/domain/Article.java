@@ -33,19 +33,18 @@ public class Article extends Timestamped{
     @Column(nullable = false)
     private String category;
 
-    public Article(Long userId, String username, String title, String content, boolean done, String category) {
+    public Article(Long userId, String username, ArticleRequestDto requestDto) {
         this.userId = userId;
         this.username = username;
-        this.title = title;
-        this.content = content;
-        this.done = done;
-        this.category = category;
+        this.title = requestDto.getTitle();
+        this.content = requestDto.getContent();
+        this.done = requestDto.getDone();
+        this.category = requestDto.getCategory();
     }
 
     public void updateArticle(ArticleRequestDto requestDto) {
         this.title = requestDto.getTitle();
         this.content = requestDto.getContent();
-        this.done = requestDto.getDone();
         this.category = requestDto.getCategory();
     }
 

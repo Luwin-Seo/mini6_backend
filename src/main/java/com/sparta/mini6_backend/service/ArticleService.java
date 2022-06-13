@@ -27,10 +27,13 @@ public class ArticleService {
         String username = userDetails.getUsername();
         String title = requestDto.getTitle();
         String content = requestDto.getContent();
-        Boolean done = requestDto.getDone();
         String category = requestDto.getCategory();
 
-        Article article = new Article(userId, username, title, content, done, category);
+        if (title.equals("")) throw new IllegalArgumentException("제목을 입력하세요.");
+        if (content.equals("")) throw new IllegalArgumentException("내용을 입력하세요.");
+        if (category.equals("")) throw new IllegalArgumentException("카테고리를 선택하세요");
+
+        Article article = new Article(userId, username, requestDto);
         articleRepository.save(article);
         return article;
     }
@@ -39,11 +42,18 @@ public class ArticleService {
     @Transactional
     public Article updateArticle(@AuthenticationPrincipal UserDetailsImpl userDetails, Long articleId, ArticleRequestDto requestDto) {
         Long loginId = userDetails.getUser().getUserId();
+        String title = requestDto.getTitle();
+        String content = requestDto.getContent();
+        String category = requestDto.getCategory();
         Article article = articleRepository.findByArticleId(articleId).orElseThrow(
                 () -> new NullPointerException("해당 게시글이 존재하지 않습니다.")
         );
 
         if (loginId != article.getUserId()) throw new IllegalArgumentException("로그인 정보가 일치하지 않습니다.");
+
+        if (title.equals("")) throw new IllegalArgumentException("제목을 입력하세요.");
+        if (content.equals("")) throw new IllegalArgumentException("내용을 입력하세요.");
+        if (category.equals("")) throw new IllegalArgumentException("카테고리를 선택하세요");
 
         article.updateArticle(requestDto);
         articleRepository.save(article);
@@ -64,11 +74,11 @@ public class ArticleService {
     }
 
     // 게시글 목록 조회
-    public Page<Article> readArticles(int page) {
-        Sort sort = Sort.by(Sort.Direction.ASC, "createdAt");
-        Pageable pageable = PageRequest.of(page, 5, sort);
-        return articleRepository.findAll(pageable);
-    }
+//    public Page<Article> readArticles(int page) {
+//        Sort sort = Sort.by(Sort.Direction.ASC, "createdAt");
+//        Pageable pageable = PageRequest.of(page, 5, sort);
+//        return articleRepository.findAll(pageable);
+//    }
 
     // 게시글 완료 처리
     @Transactional
