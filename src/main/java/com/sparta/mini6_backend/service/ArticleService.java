@@ -50,6 +50,7 @@ public class ArticleService {
     }
 
     // 게시글 삭제
+    @Transactional
     public void deleteArticle(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long articleId) {
         Long loginId = userDetails.getUser().getUserId();
         Article article = articleRepository.findByArticleId(articleId).orElseThrow(
