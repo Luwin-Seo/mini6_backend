@@ -2,7 +2,6 @@ package com.sparta.mini6_backend.controller;
 
 import com.sparta.mini6_backend.domain.Article;
 import com.sparta.mini6_backend.repository.ArticleRepository;
-import com.sparta.mini6_backend.repository.FavoriteRepository;
 import com.sparta.mini6_backend.security.UserDetailsImpl;
 import com.sparta.mini6_backend.service.FavoriteService;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +18,6 @@ import java.util.List;
 public class FavoriteController {
 
     private final ArticleRepository articleRepository;
-    private final FavoriteRepository favoriteRepository;
     private final FavoriteService favoriteService;
 
     //게시글 즐겨찾기 추가
