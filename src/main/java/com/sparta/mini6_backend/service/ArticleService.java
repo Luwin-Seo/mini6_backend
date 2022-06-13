@@ -28,8 +28,9 @@ public class ArticleService {
         String title = requestDto.getTitle();
         String content = requestDto.getContent();
         Boolean done = requestDto.getDone();
+        String category = requestDto.getCategory();
 
-        Article article = new Article(userId, username, title, content, done);
+        Article article = new Article(userId, username, title, content, done, category);
         articleRepository.save(article);
         return article;
     }
@@ -50,6 +51,7 @@ public class ArticleService {
     }
 
     // 게시글 삭제
+    @Transactional
     public void deleteArticle(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long articleId) {
         Long loginId = userDetails.getUser().getUserId();
         Article article = articleRepository.findByArticleId(articleId).orElseThrow(
