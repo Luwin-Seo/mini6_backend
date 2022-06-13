@@ -65,7 +65,7 @@ public class ArticleController {
     }
 
     // 게시글 카테고리별 목록 조회
-    @GetMapping("/api/articles/{category}")
+    @GetMapping("/api/articles/category/{category}")
     public List<Article> readArticlesByCategory(@PathVariable String category) {
         return articleRepository.findAllByCategory(category);
     }
