@@ -7,9 +7,12 @@ import com.sparta.mini6_backend.security.UserDetailsImpl;
 import com.sparta.mini6_backend.service.ArticleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -63,10 +66,14 @@ public class ArticleController {
 
     // 게시글 상세 조회
     @GetMapping("/api/articles/{articleId}")
-    public Article readArticle(@PathVariable Long articleId) {
+    public Article readArticle(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long articleId, HttpServletResponse response) throws IOException {
         Article article = articleRepository.findById(articleId).orElseThrow(
                 () -> new NullPointerException("게시글이 존재하지 않습니다.")
         );
+
+        String profilePic = userDetails.getUser().getProfilePic();
+        response.addHeader("ProfilePic", profilePic);
+
         return article;
     }
 
