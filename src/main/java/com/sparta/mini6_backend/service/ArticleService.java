@@ -1,7 +1,6 @@
 package com.sparta.mini6_backend.service;
 
 import com.sparta.mini6_backend.domain.Article;
-import com.sparta.mini6_backend.domain.Content;
 import com.sparta.mini6_backend.dto.request.ArticleRequestDto;
 import com.sparta.mini6_backend.repository.ArticleRepository;
 import com.sparta.mini6_backend.security.UserDetailsImpl;
@@ -15,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.transaction.Transactional;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -28,10 +26,10 @@ public class ArticleService {
         Long userId = userDetails.getUser().getUserId();
         String username = userDetails.getUsername();
         String title = requestDto.getTitle();
-        List<Content> contents = requestDto.getContents();
+        String content = requestDto.getContent();
         Boolean done = requestDto.getDone();
 
-        Article article = new Article(userId, username, title, contents, done);
+        Article article = new Article(userId, username, title, content, done);
         articleRepository.save(article);
         return article;
     }
