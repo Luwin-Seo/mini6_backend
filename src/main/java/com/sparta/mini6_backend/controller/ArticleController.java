@@ -64,6 +64,12 @@ public class ArticleController {
         return articleRepository.findAll();
     }
 
+    // 게시글 카테고리별 목록 조회
+    @GetMapping("/api/articles/{category}")
+    public List<Article> readArticlesByCategory(@PathVariable String category) {
+        return articleRepository.findAllByCategory(category);
+    }
+
     // 게시글 상세 조회
     @GetMapping("/api/articles/{articleId}")
     public Article readArticle(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long articleId, HttpServletResponse response) throws IOException {
