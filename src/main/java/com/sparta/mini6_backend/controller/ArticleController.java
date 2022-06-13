@@ -69,4 +69,14 @@ public class ArticleController {
         );
         return article;
     }
+
+    // 게시글 완료 처리
+    @PatchMapping("/api/articles/{articleId}/done")
+    public Article doneArticle(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long articleId) {
+        if (userDetails != null) {
+            Article article = articleService.doneArticle(userDetails, articleId);
+            return article;
+        }
+        throw new NullPointerException("로그인이 필요합니다.");
+    }
 }

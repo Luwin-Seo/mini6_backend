@@ -69,4 +69,19 @@ public class ArticleService {
         Pageable pageable = PageRequest.of(page, 5, sort);
         return articleRepository.findAll(pageable);
     }
+
+    // 게시글 완료 처리
+    @Transactional
+    public Article doneArticle(@AuthenticationPrincipal UserDetailsImpl userDetails, Long articleId) {
+        Long loginId = userDetails.getUser().getUserId();
+        Article article = articleRepository.findByArticleId(articleId).orElseThrow(
+                () -> new NullPointerException("해당 게시글이 존재하지 않습니다.")
+        );
+
+        if (loginId != article.getUserId()) throw new IllegalArgumentException("로그인 정보가 일치하지 않습니다.");
+
+        article.doneArticle();
+        articleRepository.save(article);
+        return article;
+    }
 }

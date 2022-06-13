@@ -48,4 +48,8 @@ public class Article extends Timestamped{
         this.done = requestDto.getDone();
         this.category = requestDto.getCategory();
     }
+
+    public void doneArticle() {
+        this.done = true;
+    }
 }
