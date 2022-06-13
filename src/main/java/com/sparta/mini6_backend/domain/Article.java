@@ -39,6 +39,7 @@ public class Article extends Timestamped{
         this.title = title;
         this.content = content;
         this.done = done;
+        this.category = category;
     }
 
     public void updateArticle(ArticleRequestDto requestDto) {
