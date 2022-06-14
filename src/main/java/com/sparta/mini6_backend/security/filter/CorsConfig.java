@@ -17,7 +17,7 @@ public class CorsConfig {//크로스 오리진 정책 설정
         config.addAllowedOrigin("http://localhost:3000");//모든 ip에 응답을 허용
         config.addAllowedHeader("*");//모든 헤더에 응답 허용
         config.addAllowedMethod("*");//모든 http 메서드 응답 허용
-        config.addExposedHeader("Authorization");
+        config.addExposedHeader("*");
         source.registerCorsConfiguration("/**",config);
 
         return new CorsFilter(source);
