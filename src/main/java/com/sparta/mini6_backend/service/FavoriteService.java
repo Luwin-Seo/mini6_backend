@@ -2,6 +2,7 @@ package com.sparta.mini6_backend.service;
 
 import com.sparta.mini6_backend.domain.Article;
 import com.sparta.mini6_backend.domain.Favorite;
+import com.sparta.mini6_backend.dto.response.ArticleResponseDto;
 import com.sparta.mini6_backend.repository.ArticleRepository;
 import com.sparta.mini6_backend.repository.FavoriteRepository;
 import com.sparta.mini6_backend.security.UserDetailsImpl;
@@ -34,18 +35,19 @@ public class FavoriteService {
         }
     }
 
-    public List<Article> getFavorites(UserDetailsImpl userDetails, Long articleId) {
+    public List<ArticleResponseDto> getFavorites(UserDetailsImpl userDetails, Long articleId) {
         Long userId = userDetails.getUser().getUserId();
 
         List<Favorite> favoriteList = favoriteRepository.findAllByUserId(userId);
-        List<Article> favoriteArticles = new ArrayList<>();
+        List<ArticleResponseDto> favoriteArticles = new ArrayList<>();
 
         for(int i = 0; i < favoriteList.size(); i++) {
             favoriteList.get(i).getArticleId();
             Article article = articleRepository.findById(articleId).orElseThrow(
                     () -> new NullPointerException("게시글이 존재하지 않습니다.")
             );
-            favoriteArticles.add(article);
+            ArticleResponseDto responseDto = new ArticleResponseDto(article);
+            favoriteArticles.add(responseDto);
         }
 
         return favoriteArticles;

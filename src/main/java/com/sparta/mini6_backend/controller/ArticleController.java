@@ -2,17 +2,14 @@ package com.sparta.mini6_backend.controller;
 
 import com.sparta.mini6_backend.domain.Article;
 import com.sparta.mini6_backend.dto.request.ArticleRequestDto;
+import com.sparta.mini6_backend.dto.response.ArticleResponseDto;
 import com.sparta.mini6_backend.repository.ArticleRepository;
 import com.sparta.mini6_backend.security.UserDetailsImpl;
 import com.sparta.mini6_backend.service.ArticleService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -24,20 +21,20 @@ public class ArticleController {
 
     // 게시글 작성
     @PostMapping("/api/article")
-    public Article createArticle(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody ArticleRequestDto requestDto) {
+    public ArticleResponseDto createArticle(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody ArticleRequestDto requestDto) {
         if (userDetails != null) {
-            Article article = articleService.createArticle(userDetails, requestDto);
-            return article;
+            ArticleResponseDto responseDto = articleService.createArticle(userDetails, requestDto);
+            return responseDto;
         }
         throw new NullPointerException("로그인이 필요합니다.");
     }
 
     // 게시글 수정
     @PutMapping("/api/articles/{articleId}")
-    public Article updateArticle(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long articleId, @RequestBody ArticleRequestDto requestDto) {
+    public ArticleResponseDto updateArticle(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long articleId, @RequestBody ArticleRequestDto requestDto) {
         if (userDetails != null) {
-            Article article = articleService.updateArticle(userDetails, articleId, requestDto);
-            return article;
+            ArticleResponseDto responseDto = articleService.updateArticle(userDetails, articleId, requestDto);
+            return responseDto;
         }
         throw new NullPointerException("로그인이 필요합니다.");
     }
@@ -60,35 +57,33 @@ public class ArticleController {
 //        return articles;
 //    }
     @GetMapping("/api/articles")
-    public List<Article> readArticles() {
-        return articleRepository.findAll();
+    public List<ArticleResponseDto> readArticles() {
+        return articleService.readArticles();
     }
 
     // 게시글 카테고리별 목록 조회
     @GetMapping("/api/articles/category/{category}")
-    public List<Article> readArticlesByCategory(@PathVariable String category) {
-        return articleRepository.findAllByCategory(category);
+    public List<ArticleResponseDto> readArticlesByCategory(@PathVariable String category) {
+        return articleService.readArticlesByCategory(category);
     }
 
     // 게시글 상세 조회
     @GetMapping("/api/articles/{articleId}")
-    public Article readArticle(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long articleId, HttpServletResponse response) throws IOException {
+    public ArticleResponseDto readArticle(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long articleId) {
         Article article = articleRepository.findById(articleId).orElseThrow(
                 () -> new NullPointerException("게시글이 존재하지 않습니다.")
         );
+        ArticleResponseDto responseDto = new ArticleResponseDto(article);
 
-        String profilePic = userDetails.getUser().getProfilePic();
-        response.addHeader("ProfilePic", profilePic);
-
-        return article;
+        return responseDto;
     }
 
     // 게시글 완료 처리
     @PatchMapping("/api/articles/{articleId}/done")
-    public Article doneArticle(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long articleId) {
+    public ArticleResponseDto doneArticle(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long articleId) {
         if (userDetails != null) {
-            Article article = articleService.doneArticle(userDetails, articleId);
-            return article;
+            ArticleResponseDto responseDto = articleService.doneArticle(userDetails, articleId);
+            return responseDto;
         }
         throw new NullPointerException("로그인이 필요합니다.");
     }

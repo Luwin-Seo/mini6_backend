@@ -19,23 +19,19 @@ public class Article extends Timestamped{
     private Long userId;
 
     @Column(nullable = false)
-    private String username;
-
-    @Column(nullable = false)
     private String title;
 
     @Column(nullable = false)
     private String content;
 
     @Column(nullable = false)
-    private boolean done;
+    private Boolean done;
 
     @Column(nullable = false)
     private String category;
 
-    public Article(Long userId, String username, ArticleRequestDto requestDto) {
+    public Article(Long userId, ArticleRequestDto requestDto) {
         this.userId = userId;
-        this.username = username;
         this.title = requestDto.getTitle();
         this.content = requestDto.getContent();
         this.done = requestDto.getDone();
