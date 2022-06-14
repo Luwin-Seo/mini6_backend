@@ -69,13 +69,8 @@ public class ArticleController {
 
     // 게시글 상세 조회
     @GetMapping("/api/articles/{articleId}")
-    public ArticleResponseDto readArticle(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long articleId) {
-        Article article = articleRepository.findById(articleId).orElseThrow(
-                () -> new NullPointerException("게시글이 존재하지 않습니다.")
-        );
-        ArticleResponseDto responseDto = new ArticleResponseDto(article);
-
-        return responseDto;
+    public ArticleResponseDto readArticle(@PathVariable Long articleId) {
+        return articleService.readArticle(articleId);
     }
 
     // 게시글 완료 처리

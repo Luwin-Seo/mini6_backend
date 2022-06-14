@@ -1,8 +1,6 @@
 package com.sparta.mini6_backend.controller;
 
-import com.sparta.mini6_backend.domain.Article;
 import com.sparta.mini6_backend.dto.response.ArticleResponseDto;
-import com.sparta.mini6_backend.repository.ArticleRepository;
 import com.sparta.mini6_backend.security.UserDetailsImpl;
 import com.sparta.mini6_backend.service.FavoriteService;
 import lombok.RequiredArgsConstructor;
@@ -18,26 +16,20 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FavoriteController {
 
-    private final ArticleRepository articleRepository;
     private final FavoriteService favoriteService;
 
     //게시글 즐겨찾기 추가
     @PutMapping("/api/articles/{articleId}/favorite")
     public ArticleResponseDto setFavorite(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long articleId) {
         if (userDetails != null) {
-            favoriteService.setFavorite(userDetails, articleId);
-            Article article = articleRepository.findById(articleId).orElseThrow(
-                    () -> new NullPointerException("게시글이 존재하지 않습니다.")
-            );
-            ArticleResponseDto responseDto = new ArticleResponseDto(article);
-            return responseDto;
+            return favoriteService.setFavorite(userDetails, articleId);
         }
         throw new NullPointerException("로그인이 필요합니다.");
     }
 
     //게시글 즐겨찾기 모아보기
-    @GetMapping("/api/articles/{articleId}/favorite")
-    public List<ArticleResponseDto> getFavorites(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long articleId) {
-        return favoriteService.getFavorites(userDetails, articleId);
+    @GetMapping("/api/articles/favorites")
+    public List<ArticleResponseDto> getFavorites(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return favoriteService.getFavorites(userDetails);
     }
 }

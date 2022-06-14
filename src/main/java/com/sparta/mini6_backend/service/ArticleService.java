@@ -1,15 +1,13 @@
 package com.sparta.mini6_backend.service;
 
 import com.sparta.mini6_backend.domain.Article;
+import com.sparta.mini6_backend.domain.User;
 import com.sparta.mini6_backend.dto.request.ArticleRequestDto;
 import com.sparta.mini6_backend.dto.response.ArticleResponseDto;
 import com.sparta.mini6_backend.repository.ArticleRepository;
+import com.sparta.mini6_backend.repository.UserRepository;
 import com.sparta.mini6_backend.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +21,7 @@ import java.util.List;
 public class ArticleService {
 
     private final ArticleRepository articleRepository;
+    private final UserRepository userRepository;
 
     // 게시글 작성
     public ArticleResponseDto createArticle(@AuthenticationPrincipal UserDetailsImpl userDetails, ArticleRequestDto requestDto) {
@@ -37,7 +36,9 @@ public class ArticleService {
 
         Article article = new Article(userId, requestDto);
         articleRepository.save(article);
-        ArticleResponseDto responseDto = new ArticleResponseDto(article);
+
+        User user = getUserDetails(article.getUserId());
+        ArticleResponseDto responseDto = new ArticleResponseDto(article, user);
         return responseDto;
     }
 
@@ -60,7 +61,9 @@ public class ArticleService {
 
         article.updateArticle(requestDto);
         articleRepository.save(article);
-        ArticleResponseDto responseDto = new ArticleResponseDto(article);
+
+        User user = getUserDetails(article.getUserId());
+        ArticleResponseDto responseDto = new ArticleResponseDto(article, user);
         return responseDto;
     }
 
@@ -88,7 +91,8 @@ public class ArticleService {
         List<Article> articleList = articleRepository.findAll();
 
         for(int i = 0; i < articleList.size(); i++) {
-            ArticleResponseDto responseDto = new ArticleResponseDto(articleList.get(i));
+            User user = getUserDetails(articleList.get(i).getUserId());
+            ArticleResponseDto responseDto = new ArticleResponseDto(articleList.get(i), user);
             responseList.add(responseDto);
         }
         return responseList;
@@ -100,10 +104,22 @@ public class ArticleService {
         List<Article> articleList = articleRepository.findAllByCategory(category);
 
         for(int i = 0; i < articleList.size(); i++) {
-            ArticleResponseDto responseDto = new ArticleResponseDto(articleList.get(i));
+            User user = getUserDetails(articleList.get(i).getUserId());
+            ArticleResponseDto responseDto = new ArticleResponseDto(articleList.get(i), user);
             responseList.add(responseDto);
         }
         return responseList;
+    }
+
+    // 게시글 상세 조회
+    public ArticleResponseDto readArticle(Long articleId) {
+        Article article = articleRepository.findById(articleId).orElseThrow(
+                () -> new NullPointerException("게시글이 존재하지 않습니다.")
+        );
+
+        User user = getUserDetails(article.getUserId());
+        ArticleResponseDto responseDto = new ArticleResponseDto(article, user);
+        return responseDto;
     }
 
     // 게시글 완료 처리
@@ -118,7 +134,17 @@ public class ArticleService {
 
         article.doneArticle();
         articleRepository.save(article);
-        ArticleResponseDto responseDto = new ArticleResponseDto(article);
+
+        User user = getUserDetails(article.getUserId());
+        ArticleResponseDto responseDto = new ArticleResponseDto(article, user);
         return responseDto;
+    }
+
+    // responseDto에 넣을 User 정보 불러오기
+    private User getUserDetails(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(
+                () -> new NullPointerException("User가 존재하지 않습니다.")
+        );
+        return user;
     }
 }

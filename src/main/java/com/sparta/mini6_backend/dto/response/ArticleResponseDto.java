@@ -2,7 +2,6 @@ package com.sparta.mini6_backend.dto.response;
 
 import com.sparta.mini6_backend.domain.Article;
 import com.sparta.mini6_backend.domain.User;
-import com.sparta.mini6_backend.repository.UserRepository;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -10,7 +9,6 @@ import java.time.LocalDateTime;
 @Getter
 public class ArticleResponseDto {
 
-    private UserRepository userRepository;
     private LocalDateTime createdAt;
     private Long articleId;
     private Long userId;
@@ -21,13 +19,10 @@ public class ArticleResponseDto {
     private Boolean done;
     private String category;
 
-    public ArticleResponseDto(Article article) {
+    public ArticleResponseDto(Article article, User user) {
         this.createdAt = article.getCreatedAt();
         this.articleId = article.getArticleId();
         this.userId = article.getUserId();
-        User user = userRepository.findById(this.userId).orElseThrow(
-                () -> new NullPointerException("아이디가 존재하지 않습니다.")
-        );
         this.username = user.getUsername();
         this.profilePic = user.getProfilePic();
         this.title = article.getTitle();
