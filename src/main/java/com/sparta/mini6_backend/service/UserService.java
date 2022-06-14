@@ -2,6 +2,8 @@ package com.sparta.mini6_backend.service;
 
 import com.sparta.mini6_backend.domain.User;
 import com.sparta.mini6_backend.dto.request.SignupRequestDto;
+import com.sparta.mini6_backend.exceptionHandler.CustomException;
+import com.sparta.mini6_backend.exceptionHandler.ErrorCode;
 import com.sparta.mini6_backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,7 +19,7 @@ public class UserService {
 
     public String userSignup(SignupRequestDto requestDto) {
         if (userRepository.findByUsername(requestDto.getUsername()).isPresent()) {
-            throw new IllegalArgumentException("중복된 사용자명");
+            throw new CustomException(ErrorCode.DUPLICATED_USERNAME);
         }
         User user = new User(requestDto);
         String password = passwordEncoder.encode(requestDto.getPassword());

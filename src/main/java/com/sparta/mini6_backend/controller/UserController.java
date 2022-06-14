@@ -1,12 +1,12 @@
 package com.sparta.mini6_backend.controller;
 
 import com.sparta.mini6_backend.dto.request.SignupRequestDto;
+import com.sparta.mini6_backend.exceptionHandler.RestApiException;
 import com.sparta.mini6_backend.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -30,4 +30,5 @@ public class UserController {
     public String hello () {
         return "Hello World!";
     }
+
 }
