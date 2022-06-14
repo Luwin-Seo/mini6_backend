@@ -135,7 +135,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         skipPathList.add("GET,/api/articles");
         skipPathList.add("GET,/api/articles/**");
         skipPathList.add("GET,/api/articles/*/comments");
-        skipPathList.add("/api/articles/*/like");
+        skipPathList.add("GET,/api/articles/*/like");
         skipPathList.add("OPTIONS,/");
 
 
