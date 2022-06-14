@@ -1,6 +1,8 @@
 package com.sparta.mini6_backend.controller;
 
 import com.sparta.mini6_backend.dto.response.ArticleResponseDto;
+import com.sparta.mini6_backend.exceptionHandler.CustomException;
+import com.sparta.mini6_backend.exceptionHandler.ErrorCode;
 import com.sparta.mini6_backend.security.UserDetailsImpl;
 import com.sparta.mini6_backend.service.FavoriteService;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +26,7 @@ public class FavoriteController {
         if (userDetails != null) {
             return favoriteService.setFavorite(userDetails, articleId);
         }
-        throw new NullPointerException("로그인이 필요합니다.");
+        throw new CustomException(ErrorCode.AUTH_TOKEN_NOT_FOUND);
     }
 
     //게시글 즐겨찾기 모아보기

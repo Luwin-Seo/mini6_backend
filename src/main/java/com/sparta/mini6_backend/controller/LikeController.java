@@ -1,5 +1,7 @@
 package com.sparta.mini6_backend.controller;
 
+import com.sparta.mini6_backend.exceptionHandler.CustomException;
+import com.sparta.mini6_backend.exceptionHandler.ErrorCode;
 import com.sparta.mini6_backend.repository.LikeRepository;
 import com.sparta.mini6_backend.security.UserDetailsImpl;
 import com.sparta.mini6_backend.service.LikeService;
@@ -20,7 +22,7 @@ public class LikeController {
 
     @PutMapping("/article/{articleId}/like")
     public int updateLike (@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long articleId) {
-        if (userDetails == null){throw new IllegalArgumentException("로그인되지 않은 사용자");}
+        if (userDetails == null){throw new CustomException(ErrorCode.AUTH_TOKEN_NOT_FOUND);}
         likeService.updateLike(articleId,userDetails.getUser().getUserId());
         return likeRepository.findAllByArticleId(articleId).size();
     }

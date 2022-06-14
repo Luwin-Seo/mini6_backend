@@ -3,6 +3,8 @@ package com.sparta.mini6_backend.controller;
 
 import com.sparta.mini6_backend.domain.Comment;
 import com.sparta.mini6_backend.dto.request.CommentRequestDto;
+import com.sparta.mini6_backend.exceptionHandler.CustomException;
+import com.sparta.mini6_backend.exceptionHandler.ErrorCode;
 import com.sparta.mini6_backend.repository.CommentRepository;
 import com.sparta.mini6_backend.security.UserDetailsImpl;
 import com.sparta.mini6_backend.service.CommentService;
@@ -36,7 +38,7 @@ public class CommentController {
                                  @AuthenticationPrincipal UserDetailsImpl userDetails) {
         //로그인된 사용자 확인
         if(userDetails == null ) { //userDetails.getName()은 nullExceptionPoint 에러 날 수 있다.!!그래서 userDetails로 하자.
-            throw new IllegalArgumentException("로그인 후 사용해주세요");
+            throw new CustomException(ErrorCode.AUTH_TOKEN_NOT_FOUND);
         }
 
         //서비스에게 위임
@@ -51,7 +53,7 @@ public class CommentController {
                                  @AuthenticationPrincipal UserDetailsImpl userDetails){
         //로그인된 사용자 확인 - 다시 확인하기
         if(userDetails == null ) { //userDetails.getName()은 nullExceptionPoint 에러 날 수 있다.!!그래서 userDetails로 하자.
-            throw new IllegalArgumentException("로그인 후 사용해주세요");
+            throw new CustomException(ErrorCode.AUTH_TOKEN_NOT_FOUND);
         }
 
         //서비스에 위임
@@ -66,7 +68,7 @@ public class CommentController {
 
         //로그인된 사용자 확인 - 다시 확인하기
         if(userDetails == null ) { //userDetails.getName()은 nullExceptionPoint 에러 날 수 있다.!!그래서 userDetails로 하자.
-            throw new IllegalArgumentException("로그인 후 사용해주세요");
+            throw new CustomException(ErrorCode.AUTH_TOKEN_NOT_FOUND);
         }
 
         //서비스에 위임

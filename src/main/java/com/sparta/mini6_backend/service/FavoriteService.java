@@ -4,6 +4,8 @@ import com.sparta.mini6_backend.domain.Article;
 import com.sparta.mini6_backend.domain.Favorite;
 import com.sparta.mini6_backend.domain.User;
 import com.sparta.mini6_backend.dto.response.ArticleResponseDto;
+import com.sparta.mini6_backend.exceptionHandler.CustomException;
+import com.sparta.mini6_backend.exceptionHandler.ErrorCode;
 import com.sparta.mini6_backend.repository.ArticleRepository;
 import com.sparta.mini6_backend.repository.FavoriteRepository;
 import com.sparta.mini6_backend.repository.UserRepository;
@@ -27,14 +29,14 @@ public class FavoriteService {
     @Transactional
     public ArticleResponseDto setFavorite(@AuthenticationPrincipal UserDetailsImpl userDetails, Long articleId) {
         Article article = articleRepository.findById(articleId).orElseThrow(
-                () -> new NullPointerException("게시글이 존재하지 않습니다.")
+                () -> new CustomException(ErrorCode.ARTICLE_NOT_FOUND)
         );
 
         Long userId = userDetails.getUser().getUserId();
 
         if (favoriteRepository.findByUserIdAndArticleId(userId, articleId).isPresent()) {
             Favorite favorite = favoriteRepository.findByUserIdAndArticleId(userId, articleId).orElseThrow(
-                    () -> new NullPointerException("즐겨찾기가 존재하지 않습니다."));
+                    () -> new CustomException(ErrorCode.PIN_NOT_FOUND));
             favoriteRepository.delete(favorite);
         } else {
             Favorite favorite = new Favorite(userId, articleId);
@@ -55,7 +57,7 @@ public class FavoriteService {
         for(int i = 0; i < favoriteList.size(); i++) {
             Long articleId = favoriteList.get(i).getArticleId();
             Article article = articleRepository.findById(articleId).orElseThrow(
-                    () -> new NullPointerException("게시글이 존재하지 않습니다.")
+                    () -> new CustomException(ErrorCode.ARTICLE_NOT_FOUND)
             );
 
             User user = getUserDetails(article.getUserId());
@@ -69,7 +71,7 @@ public class FavoriteService {
     // responseDto에 넣을 User 정보 불러오기
     private User getUserDetails(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(
-                () -> new NullPointerException("User가 존재하지 않습니다.")
+                () -> new CustomException(ErrorCode.USER_NOT_FOUND)
         );
         return user;
     }

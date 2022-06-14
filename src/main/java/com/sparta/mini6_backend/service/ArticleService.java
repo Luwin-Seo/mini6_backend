@@ -4,6 +4,8 @@ import com.sparta.mini6_backend.domain.Article;
 import com.sparta.mini6_backend.domain.User;
 import com.sparta.mini6_backend.dto.request.ArticleRequestDto;
 import com.sparta.mini6_backend.dto.response.ArticleResponseDto;
+import com.sparta.mini6_backend.exceptionHandler.CustomException;
+import com.sparta.mini6_backend.exceptionHandler.ErrorCode;
 import com.sparta.mini6_backend.repository.ArticleRepository;
 import com.sparta.mini6_backend.repository.UserRepository;
 import com.sparta.mini6_backend.security.UserDetailsImpl;
@@ -30,9 +32,9 @@ public class ArticleService {
         String content = requestDto.getContent();
         String category = requestDto.getCategory();
 
-        if (title.equals("")) throw new IllegalArgumentException("제목을 입력하세요.");
-        if (content.equals("")) throw new IllegalArgumentException("내용을 입력하세요.");
-        if (category.equals("")) throw new IllegalArgumentException("카테고리를 선택하세요");
+        if (title.equals("")) throw new CustomException(ErrorCode.EMPTY_CONTENT);
+        if (content.equals("")) throw new CustomException(ErrorCode.EMPTY_CONTENT);
+        if (category.equals("")) throw new CustomException(ErrorCode.EMPTY_CONTENT);
 
         Article article = new Article(userId, requestDto);
         articleRepository.save(article);
@@ -50,14 +52,14 @@ public class ArticleService {
         String content = requestDto.getContent();
         String category = requestDto.getCategory();
         Article article = articleRepository.findByArticleId(articleId).orElseThrow(
-                () -> new NullPointerException("해당 게시글이 존재하지 않습니다.")
+                () -> new CustomException(ErrorCode.ARTICLE_NOT_FOUND)
         );
 
         if (loginId != article.getUserId()) throw new IllegalArgumentException("로그인 정보가 일치하지 않습니다.");
 
-        if (title.equals("")) throw new IllegalArgumentException("제목을 입력하세요.");
-        if (content.equals("")) throw new IllegalArgumentException("내용을 입력하세요.");
-        if (category.equals("")) throw new IllegalArgumentException("카테고리를 선택하세요");
+        if (title.equals("")) throw new CustomException(ErrorCode.EMPTY_CONTENT);
+        if (content.equals("")) throw new CustomException(ErrorCode.EMPTY_CONTENT);
+        if (category.equals("")) throw new CustomException(ErrorCode.EMPTY_CONTENT);
 
         article.updateArticle(requestDto);
         articleRepository.save(article);
@@ -72,10 +74,10 @@ public class ArticleService {
     public void deleteArticle(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long articleId) {
         Long loginId = userDetails.getUser().getUserId();
         Article article = articleRepository.findByArticleId(articleId).orElseThrow(
-                () -> new NullPointerException("해당 게시글이 존재하지 않습니다.")
+                () -> new CustomException(ErrorCode.ARTICLE_NOT_FOUND)
         );
 
-        if (loginId != article.getUserId()) throw new IllegalArgumentException("로그인 정보가 일치하지 않습니다.");
+        if (loginId != article.getUserId()) throw new CustomException(ErrorCode.INVALID_AUTHORITY);
 
         articleRepository.deleteByArticleId(articleId);
     }
@@ -114,7 +116,7 @@ public class ArticleService {
     // 게시글 상세 조회
     public ArticleResponseDto readArticle(Long articleId) {
         Article article = articleRepository.findById(articleId).orElseThrow(
-                () -> new NullPointerException("게시글이 존재하지 않습니다.")
+                () -> new CustomException(ErrorCode.ARTICLE_NOT_FOUND)
         );
 
         User user = getUserDetails(article.getUserId());
@@ -127,10 +129,10 @@ public class ArticleService {
     public ArticleResponseDto doneArticle(@AuthenticationPrincipal UserDetailsImpl userDetails, Long articleId) {
         Long loginId = userDetails.getUser().getUserId();
         Article article = articleRepository.findByArticleId(articleId).orElseThrow(
-                () -> new NullPointerException("해당 게시글이 존재하지 않습니다.")
+                () -> new CustomException(ErrorCode.ARTICLE_NOT_FOUND)
         );
 
-        if (loginId != article.getUserId()) throw new IllegalArgumentException("로그인 정보가 일치하지 않습니다.");
+        if (loginId != article.getUserId()) throw new CustomException(ErrorCode.INVALID_AUTHORITY);
 
         article.doneArticle();
         articleRepository.save(article);
@@ -143,7 +145,7 @@ public class ArticleService {
     // responseDto에 넣을 User 정보 불러오기
     private User getUserDetails(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(
-                () -> new NullPointerException("User가 존재하지 않습니다.")
+                () -> new CustomException(ErrorCode.USER_NOT_FOUND)
         );
         return user;
     }

@@ -3,6 +3,8 @@ package com.sparta.mini6_backend.controller;
 import com.sparta.mini6_backend.domain.Article;
 import com.sparta.mini6_backend.dto.request.ArticleRequestDto;
 import com.sparta.mini6_backend.dto.response.ArticleResponseDto;
+import com.sparta.mini6_backend.exceptionHandler.CustomException;
+import com.sparta.mini6_backend.exceptionHandler.ErrorCode;
 import com.sparta.mini6_backend.repository.ArticleRepository;
 import com.sparta.mini6_backend.security.UserDetailsImpl;
 import com.sparta.mini6_backend.service.ArticleService;
@@ -26,7 +28,7 @@ public class ArticleController {
             ArticleResponseDto responseDto = articleService.createArticle(userDetails, requestDto);
             return responseDto;
         }
-        throw new NullPointerException("로그인이 필요합니다.");
+        throw new CustomException(ErrorCode.AUTH_TOKEN_NOT_FOUND);
     }
 
     // 게시글 수정
@@ -36,7 +38,7 @@ public class ArticleController {
             ArticleResponseDto responseDto = articleService.updateArticle(userDetails, articleId, requestDto);
             return responseDto;
         }
-        throw new NullPointerException("로그인이 필요합니다.");
+        throw new CustomException(ErrorCode.AUTH_TOKEN_NOT_FOUND);
     }
 
     // 게시글 삭제
@@ -46,7 +48,7 @@ public class ArticleController {
             articleService.deleteArticle(userDetails, articleId);
             return "게시글이 삭제되었습니다.";
         }
-        throw new NullPointerException("로그인이 필요합니다.");
+        throw new CustomException(ErrorCode.AUTH_TOKEN_NOT_FOUND);
     }
 
     // 게시글 목록 조회
@@ -80,6 +82,6 @@ public class ArticleController {
             ArticleResponseDto responseDto = articleService.doneArticle(userDetails, articleId);
             return responseDto;
         }
-        throw new NullPointerException("로그인이 필요합니다.");
+        throw new CustomException(ErrorCode.AUTH_TOKEN_NOT_FOUND);
     }
 }
