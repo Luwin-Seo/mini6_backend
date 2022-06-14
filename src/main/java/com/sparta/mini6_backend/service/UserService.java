@@ -19,7 +19,7 @@ public class UserService {
 
     public String userSignup(SignupRequestDto requestDto) {
         if (userRepository.findByUsername(requestDto.getUsername()).isPresent()) {
-            throw new CustomException(ErrorCode.DUPLICATED_USERNAME);
+            throw new CustomException(ErrorCode.DUPLICATE_USERNAME);
         }
         User user = new User(requestDto);
         String password = passwordEncoder.encode(requestDto.getPassword());
