@@ -1,5 +1,7 @@
 package com.sparta.mini6_backend.security.jwt;
 
+import com.sparta.mini6_backend.exceptionHandler.CustomException;
+import com.sparta.mini6_backend.exceptionHandler.ErrorCode;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,7 +24,7 @@ public class HeaderTokenExtractor {
          */
         if (header == null || header.equals("") || header.length() < HEADER_PREFIX.length()) {
             System.out.println("error request : " + request.getRequestURI());
-            throw new NoSuchElementException("올바른 JWT 정보가 아닙니다.");
+            throw new CustomException(ErrorCode.AUTH_TOKEN_NOT_FOUND);
         }
 
         /*

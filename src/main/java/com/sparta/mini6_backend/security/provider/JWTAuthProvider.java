@@ -1,6 +1,8 @@
 package com.sparta.mini6_backend.security.provider;
 
 import com.sparta.mini6_backend.domain.User;
+import com.sparta.mini6_backend.exceptionHandler.CustomException;
+import com.sparta.mini6_backend.exceptionHandler.ErrorCode;
 import com.sparta.mini6_backend.repository.UserRepository;
 import com.sparta.mini6_backend.security.UserDetailsImpl;
 import com.sparta.mini6_backend.security.jwt.JwtDecoder;
@@ -27,7 +29,7 @@ public class JWTAuthProvider implements AuthenticationProvider {
         String username = jwtDecoder.decodeUsername(token);
 
         User user = userRepository.findByUsername(username)
-                .orElseThrow(()-> new UsernameNotFoundException("Can't find " + username));
+                .orElseThrow(()-> new CustomException(ErrorCode.USER_NOT_FOUND));
         UserDetailsImpl userDetails = new UserDetailsImpl(user);
         return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
     }

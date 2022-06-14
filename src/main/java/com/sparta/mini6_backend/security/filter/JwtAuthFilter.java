@@ -1,5 +1,6 @@
 package com.sparta.mini6_backend.security.filter;
 
+import com.sparta.mini6_backend.exceptionHandler.CustomException;
 import com.sparta.mini6_backend.security.jwt.HeaderTokenExtractor;
 import com.sparta.mini6_backend.security.jwt.JwtPreProcessingToken;
 import org.springframework.security.core.Authentication;
@@ -37,20 +38,25 @@ public class JwtAuthFilter extends AbstractAuthenticationProcessingFilter {
             HttpServletRequest request,
             HttpServletResponse response
     ) throws AuthenticationException, IOException {
+        try {
+            // JWT 값을 담아주는 변수 TokenPayload
+            String tokenPayload = request.getHeader("Authorization");
+            if (tokenPayload == null) {
+                //response.sendRedirect("/user/loginView");
+                return null;
+            }
 
-        // JWT 값을 담아주는 변수 TokenPayload
-        String tokenPayload = request.getHeader("Authorization");
-        if (tokenPayload == null) {
-            //response.sendRedirect("/user/loginView");
+            JwtPreProcessingToken jwtToken = new JwtPreProcessingToken(
+                    extractor.extract(tokenPayload, request));
+
+            return super
+                    .getAuthenticationManager()
+                    .authenticate(jwtToken);
+        } catch (CustomException e) {
+            response.sendError(e.getErrorCode().getHttpStatus().value(), e.getMessage());
+
             return null;
         }
-
-        JwtPreProcessingToken jwtToken = new JwtPreProcessingToken(
-                extractor.extract(tokenPayload, request));
-
-        return super
-                .getAuthenticationManager()
-                .authenticate(jwtToken);
     }
 
     @Override
