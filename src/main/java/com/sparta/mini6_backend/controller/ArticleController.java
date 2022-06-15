@@ -1,13 +1,12 @@
 package com.sparta.mini6_backend.controller;
 
-import com.sparta.mini6_backend.domain.Article;
 import com.sparta.mini6_backend.dto.request.ArticleRequestDto;
 import com.sparta.mini6_backend.dto.response.ArticleResponseDto;
 import com.sparta.mini6_backend.exceptionHandler.CustomException;
 import com.sparta.mini6_backend.exceptionHandler.ErrorCode;
-import com.sparta.mini6_backend.repository.ArticleRepository;
 import com.sparta.mini6_backend.security.UserDetailsImpl;
 import com.sparta.mini6_backend.service.ArticleService;
+import com.sparta.mini6_backend.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -18,8 +17,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ArticleController {
 
-    private final ArticleRepository articleRepository;
     private final ArticleService articleService;
+    private final CommentService commentService;
 
     // 게시글 작성
     @PostMapping("/api/article")
@@ -46,6 +45,7 @@ public class ArticleController {
     public String deleteArticle(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long articleId) {
         if (userDetails != null) {
             articleService.deleteArticle(userDetails, articleId);
+            commentService.deleteComments(articleId);
             return "게시글이 삭제되었습니다.";
         }
         throw new CustomException(ErrorCode.AUTH_TOKEN_NOT_FOUND);

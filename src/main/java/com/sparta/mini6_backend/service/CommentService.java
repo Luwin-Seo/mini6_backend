@@ -110,6 +110,12 @@ public class CommentService {
         return new ResponseEntity("댓글 삭제 성공", HttpStatus.OK);
     }
 
+    // 게시글 삭제 시 관련 댓글 모두 삭제
+    @Transactional
+    public void deleteComments(Long articleId) {
+        commentRepository.deleteAllByArticleId(articleId);
+    }
+
     private void validateCheckUser(User joinUser, Comment comment) {
         if (!joinUser.getUserId().equals(comment.getUserId())){
             throw new CustomException(ErrorCode.INVALID_AUTHORITY);
