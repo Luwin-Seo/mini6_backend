@@ -54,7 +54,15 @@ public class JwtAuthFilter extends AbstractAuthenticationProcessingFilter {
                     .getAuthenticationManager()
                     .authenticate(jwtToken);
         } catch (CustomException e) {
-            response.sendError(e.getErrorCode().getHttpStatus().value(), e.getMessage());
+            //response.sendError(e.getErrorCode().getHttpStatus().value(), e.getMessage());
+            response.setContentType("application/json;charset=UTF-8");
+            response.setStatus(e.getErrorCode().getHttpStatus().value());
+            response.getWriter().println("{");
+            response.getWriter().println("\"status\" : \"" + e.getErrorCode().getHttpStatus().value()+"\",");
+            response.getWriter().println("\"errors\" : \"" + e.getErrorCode().getHttpStatus().name()+"\",");
+            response.getWriter().println("\"code\" : " + e.getErrorCode().name()+"\",");
+            response.getWriter().println("\"message\" : " + e.getErrorCode().getErrorMessage());
+            response.getWriter().println("}");
             return null;
         }
     }
