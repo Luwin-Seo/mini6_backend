@@ -142,6 +142,32 @@ public class ArticleService {
         return responseDto;
     }
 
+    // 게시글 해결분 모아보기
+    public List<ArticleResponseDto> readSolvedArticles() {
+        List<ArticleResponseDto> responseList = new ArrayList<>();
+        List<Article> articleList = articleRepository.findAllByDone(true);
+
+        for(int i = 0; i < articleList.size(); i++) {
+            User user = getUserDetails(articleList.get(i).getUserId());
+            ArticleResponseDto responseDto = new ArticleResponseDto(articleList.get(i), user);
+            responseList.add(responseDto);
+        }
+        return responseList;
+    }
+
+    // 게시글 미해결분 모아보기
+    public List<ArticleResponseDto> readUnsolvedArticles() {
+        List<ArticleResponseDto> responseList = new ArrayList<>();
+        List<Article> articleList = articleRepository.findAllByDone(false);
+
+        for(int i = 0; i < articleList.size(); i++) {
+            User user = getUserDetails(articleList.get(i).getUserId());
+            ArticleResponseDto responseDto = new ArticleResponseDto(articleList.get(i), user);
+            responseList.add(responseDto);
+        }
+        return responseList;
+    }
+
     // responseDto에 넣을 User 정보 불러오기
     private User getUserDetails(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(
