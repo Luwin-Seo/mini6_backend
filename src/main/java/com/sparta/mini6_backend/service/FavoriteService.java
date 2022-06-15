@@ -4,6 +4,7 @@ import com.sparta.mini6_backend.domain.Article;
 import com.sparta.mini6_backend.domain.Favorite;
 import com.sparta.mini6_backend.domain.User;
 import com.sparta.mini6_backend.dto.response.ArticleResponseDto;
+import com.sparta.mini6_backend.dto.response.ArticleResponseDtoForFav;
 import com.sparta.mini6_backend.exceptionHandler.CustomException;
 import com.sparta.mini6_backend.exceptionHandler.ErrorCode;
 import com.sparta.mini6_backend.repository.ArticleRepository;
@@ -48,11 +49,11 @@ public class FavoriteService {
         return responseDto;
     }
 
-    public List<ArticleResponseDto> getFavorites(UserDetailsImpl userDetails) {
+    public List<ArticleResponseDtoForFav> getFavorites(UserDetailsImpl userDetails) {
         Long userId = userDetails.getUser().getUserId();
 
         List<Favorite> favoriteList = favoriteRepository.findAllByUserId(userId);
-        List<ArticleResponseDto> favoriteArticles = new ArrayList<>();
+        List<ArticleResponseDtoForFav> favoriteArticles = new ArrayList<>();
 
         for(int i = 0; i < favoriteList.size(); i++) {
             Long articleId = favoriteList.get(i).getArticleId();
@@ -61,7 +62,7 @@ public class FavoriteService {
             );
 
             User user = getUserDetails(article.getUserId());
-            ArticleResponseDto responseDto = new ArticleResponseDto(article, user);
+            ArticleResponseDtoForFav responseDto = new ArticleResponseDtoForFav(article, user);
             favoriteArticles.add(responseDto);
         }
 

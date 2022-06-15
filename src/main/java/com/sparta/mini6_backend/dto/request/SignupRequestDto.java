@@ -11,7 +11,7 @@ import javax.validation.constraints.Pattern;
 public class SignupRequestDto {
 
     @NotBlank
-    @Pattern(regexp = "(?=.*[0-9a-zA-Z]).{4,20}")
+    @Pattern(regexp = "(?=.*[\\da-zA-Z])[가-힣a-zA-Z\\d-_.]{4,15}")
     private String username;
 
     @NotBlank

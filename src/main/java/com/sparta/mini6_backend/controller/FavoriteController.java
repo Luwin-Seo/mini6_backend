@@ -1,6 +1,7 @@
 package com.sparta.mini6_backend.controller;
 
 import com.sparta.mini6_backend.dto.response.ArticleResponseDto;
+import com.sparta.mini6_backend.dto.response.ArticleResponseDtoForFav;
 import com.sparta.mini6_backend.exceptionHandler.CustomException;
 import com.sparta.mini6_backend.exceptionHandler.ErrorCode;
 import com.sparta.mini6_backend.security.UserDetailsImpl;
@@ -31,7 +32,7 @@ public class FavoriteController {
 
     //게시글 즐겨찾기 모아보기
     @GetMapping("/api/articles/favorites")
-    public List<ArticleResponseDto> getFavorites(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public List<ArticleResponseDtoForFav> getFavorites(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         return favoriteService.getFavorites(userDetails);
     }
 }

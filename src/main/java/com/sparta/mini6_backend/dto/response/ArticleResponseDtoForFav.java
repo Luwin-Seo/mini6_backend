@@ -2,13 +2,10 @@ package com.sparta.mini6_backend.dto.response;
 
 import com.sparta.mini6_backend.domain.Article;
 import com.sparta.mini6_backend.domain.User;
-import lombok.Getter;
 
 import java.time.LocalDateTime;
 
-@Getter
-public class ArticleResponseDto {
-
+public class ArticleResponseDtoForFav {
     private LocalDateTime createdAt;
     private Long articleId;
     private Long userId;
@@ -18,9 +15,10 @@ public class ArticleResponseDto {
     private String content;
     private Boolean done;
     private String category;
+
     private boolean fav;
 
-    public ArticleResponseDto(Article article, User user) {
+    public ArticleResponseDtoForFav(Article article, User user) {
         this.createdAt = article.getCreatedAt();
         this.articleId = article.getArticleId();
         this.userId = article.getUserId();
@@ -33,3 +31,4 @@ public class ArticleResponseDto {
         this.fav = true;
     }
 }
+
