@@ -84,4 +84,16 @@ public class ArticleController {
         }
         throw new CustomException(ErrorCode.AUTH_TOKEN_NOT_FOUND);
     }
+
+    // 게시글 해결분 모아보기
+    @GetMapping("/api/articles/solved")
+    public List<ArticleResponseDto> readSolvedArticles() {
+        return articleService.readSolvedArticles();
+    }
+
+    // 게시글 미해결분 모아보기
+    @GetMapping("/api/articles/unsolved")
+    public List<ArticleResponseDto> readUnsolvedArticles() {
+        return articleService.readUnsolvedArticles();
+    }
 }
