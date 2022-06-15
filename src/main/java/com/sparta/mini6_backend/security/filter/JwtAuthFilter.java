@@ -60,8 +60,8 @@ public class JwtAuthFilter extends AbstractAuthenticationProcessingFilter {
             response.getWriter().println("{");
             response.getWriter().println("\"status\" : \"" + e.getErrorCode().getHttpStatus().value()+"\",");
             response.getWriter().println("\"errors\" : \"" + e.getErrorCode().getHttpStatus().name()+"\",");
-            response.getWriter().println("\"code\" : " + e.getErrorCode().name()+"\",");
-            response.getWriter().println("\"message\" : " + e.getErrorCode().getErrorMessage());
+            response.getWriter().println("\"code\" : \"" + e.getErrorCode().name()+"\",");
+            response.getWriter().println("\"message\" : \"" + e.getErrorCode().getErrorMessage()+"\"");
             response.getWriter().println("}");
             return null;
         }
