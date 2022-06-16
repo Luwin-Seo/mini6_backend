@@ -1,4 +1,4 @@
-# Dev Box (Develoment Box) / 개발 지식인
+# Dev Box (Develoment Box) / 개발자 지식인
 
 # 👏 프로젝트 소개
 
