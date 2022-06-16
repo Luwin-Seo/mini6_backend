@@ -1,5 +1,6 @@
 package com.sparta.mini6_backend.controller;
 
+import com.sparta.mini6_backend.dto.response.LikeResponseDto;
 import com.sparta.mini6_backend.exceptionHandler.CustomException;
 import com.sparta.mini6_backend.exceptionHandler.ErrorCode;
 import com.sparta.mini6_backend.repository.LikeRepository;
@@ -18,14 +19,14 @@ public class LikeController {
     private final LikeRepository likeRepository;
 
     @PutMapping("/api/articles/{articleId}/like")
-    public int updateLike (@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long articleId) {
+    public LikeResponseDto updateLike (@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long articleId) {
         if (userDetails == null){throw new CustomException(ErrorCode.AUTH_TOKEN_NOT_FOUND);}
         likeService.updateLike(articleId,userDetails.getUser().getUserId());
-        return likeRepository.findAllByArticleId(articleId).size();
+        return new LikeResponseDto(likeRepository.findAllByArticleId(articleId).size(), articleId);
     }
 
     @GetMapping("/api/articles/{articleId}/like")
-    public int getLike(@PathVariable Long articleId) {
-        return likeRepository.findAllByArticleId(articleId).size();
+    public LikeResponseDto getLike(@PathVariable Long articleId) {
+        return new LikeResponseDto(likeRepository.findAllByArticleId(articleId).size(), articleId);
     }
 }
