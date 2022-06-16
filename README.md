@@ -57,4 +57,4 @@ Mail Box 형태의 UI에서 친숙함을 느껴보세요!
 <img src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/10f20d3a-d7ef-4dde-a162-d71c74406096/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220616%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220616T065347Z&X-Amz-Expires=86400&X-Amz-Signature=763c44611277014ea28cda382f429239df4d4de8f0db7f115a146ab78292b36c&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Untitled.png%22&x-id=GetObject" width="900">
 
 # ****💡 Trouble Shooting****
-1. 여기에 트러블 슈팅 적으시면 되요~
+1. 여기에 트러블 슈팅 적으시면 됩니당~
