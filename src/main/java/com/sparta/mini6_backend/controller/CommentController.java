@@ -3,6 +3,7 @@ package com.sparta.mini6_backend.controller;
 
 import com.sparta.mini6_backend.domain.Comment;
 import com.sparta.mini6_backend.dto.request.CommentRequestDto;
+import com.sparta.mini6_backend.dto.response.CommentResponseDto;
 import com.sparta.mini6_backend.exceptionHandler.CustomException;
 import com.sparta.mini6_backend.exceptionHandler.ErrorCode;
 import com.sparta.mini6_backend.repository.CommentRepository;
@@ -25,10 +26,9 @@ public class CommentController {
 
     //댓글 조회
     @GetMapping("/api/articles/{articleId}/comments")
-    public List<Comment> getComments(@PathVariable Long articleId) {
-
+    public List<CommentResponseDto> getComments(@PathVariable Long articleId) {
         //댓글 ArticleId로 조회하고 내림차순으로 정렬 //찾을 때 ArticleId가 아닌 Article로 찾아야한다. comment에 ArticleId가 없다...
-        return commentRepository.findByArticleIdOrderByCreatedAtAsc(articleId);
+        return commentService.getComment(articleId);
     }
 
     //댓글 생성

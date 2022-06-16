@@ -4,6 +4,7 @@ import com.sparta.mini6_backend.domain.Article;
 import com.sparta.mini6_backend.domain.Comment;
 import com.sparta.mini6_backend.domain.User;
 import com.sparta.mini6_backend.dto.request.CommentRequestDto;
+import com.sparta.mini6_backend.dto.response.CommentResponseDto;
 import com.sparta.mini6_backend.exceptionHandler.CustomException;
 import com.sparta.mini6_backend.exceptionHandler.ErrorCode;
 import com.sparta.mini6_backend.repository.ArticleRepository;
@@ -17,6 +18,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Service
@@ -120,5 +123,18 @@ public class CommentService {
         if (!joinUser.getUserId().equals(comment.getUserId())){
             throw new CustomException(ErrorCode.INVALID_AUTHORITY);
         }
+    }
+
+    public List<CommentResponseDto> getComment(Long articleId) {
+        List<CommentResponseDto> commentResponseDtos = new ArrayList<>();
+        List<Comment> comments = commentRepository.findByArticleIdOrderByCreatedAtAsc(articleId);
+        for(int i = 0; i < comments.size(); i++) {
+            User user = userRepository.findById(comments.get(i).getUserId()).orElseThrow(
+                    ()-> new NullPointerException("사용자가 존재하지 않습니다")
+            );
+            CommentResponseDto commentResponseDto = new CommentResponseDto(comments.get(i), user.getProfilePic());
+            commentResponseDtos.add(commentResponseDto);
+        }
+        return commentResponseDtos;
     }
 }
