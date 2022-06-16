@@ -2,9 +2,11 @@ package com.sparta.mini6_backend.dto.response;
 
 import com.sparta.mini6_backend.domain.Article;
 import com.sparta.mini6_backend.domain.User;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 
+@Getter
 public class ArticleResponseDtoForFav {
     private LocalDateTime createdAt;
     private Long articleId;
